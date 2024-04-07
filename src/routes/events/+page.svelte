@@ -8,20 +8,6 @@
 	let Location = data.Location;
 	let Building = data.Building;
 	let Course = data.Course;
-
-	async function filterByStudentName(filter_id = 0){
-
-		let filtered = [];
-
-
-		if (filter_id > 0){
-			filtered = supabase.from('Student').select('*').eq('StudentID', filter_id);
-		} else {
-			filtered = await supabase.from('Student').select('*');
-		}
-
-		Log = filtered.data;
-	}
 </script>
 
 <!-- The HTML content of the page-->
@@ -35,7 +21,7 @@
 		<!-- Page Body Left Column (menu) -->
 		<div id="Log" class="list-group">
 			<!-- log links -->
-			<button on:click={filterByStudentName} class="list-group-item list-group-item-action">All Student</button>
+			<button class="list-group-item list-group-item-action">All Student</button>
 			{#each Student as Student}
 				<button class="list-group-item list-group-item-action">{Student.StudentName}</button>
 			{/each}
