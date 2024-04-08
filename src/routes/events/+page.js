@@ -7,7 +7,7 @@ export async function load({fetch, params}) {
 
     const Student = await db.get_all_student();
 
-    console.log(Student);
+    console.log("Events on pagejs page");
     //return data to page
     if (Log && Student) {
         return {
