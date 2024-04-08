@@ -73,11 +73,10 @@ export async function get_all_student(){
 // @ts-ignore
 export async function search_events(search_text) {
     const result = await supabase
-	.from('Log')
+	.from('Log, Log(StudentID)')
     // select StudentID from Log table - requires valid one-many setup  
 	.select('*')
-    .or (`StudentID.ilike.%${search_text}%`)
-	.order('timestamp', { ascending: true });
+    .or (`StudentID.ilike.%${search_text}%, LogID.ilike.%${search_text}%`);
 
     // log errors
     if (result.error) {
