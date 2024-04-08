@@ -67,3 +67,23 @@ export async function get_all_student(){
     
     return result.data;
 }
+
+// Search events
+// uses .or and ilike to search multiple columns
+// @ts-ignore
+export async function search_events(search_text) {
+    const result = await supabase
+	.from('Log')
+    // select StudentID from Log table - requires valid one-many setup  
+	.select('*')
+    .or (`StudentID.ilike.%${search_text}%`)
+	.order('timestamp', { ascending: true });
+
+    // log errors
+    if (result.error) {
+        console.log(`get all events error: ${result.error}`);
+    }
+
+    // return data
+    return result.data;
+}

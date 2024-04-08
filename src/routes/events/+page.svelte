@@ -1,8 +1,12 @@
 <script>
 	// @ts-nocheck
-	import * as db from '$lib/data_access.js'
+	import { writable } from 'svelte/store';
+	import * as db from '$lib/data_access.js';
 	import { supabase } from '$lib/supabase.js';
+	import { format_timestamp } from '$lib/utilities.js';
 	export let data;
+
+	let events = writable([...data.Log]);
 
 	let Log = data.Log;
 	let Student = data.Student;
@@ -23,7 +27,19 @@
 
 		Log = filtered.data;
 	}
-	console.log('filterByStudent');
+	console.log(Log);
+
+	let search_text = '';
+
+	//search event
+	async function search_events() {
+		if (search_text == '') {
+			alert('invalid search');
+			return false;
+		}
+		const result = await db.search_events(search_text);
+		$events = result;
+	}
 </script>
 
 <!-- The HTML content of the page-->
@@ -61,6 +77,7 @@
 					<div class="col-md-4 d-flex">
 						<input
 							type="text"
+							bind:value={search_text}
 							class="form-control"
 							name="search"
 							placeholder="search Events"
@@ -68,7 +85,7 @@
 					</div>
 					<!-- submit button -->
 					<div class="col-md-1">
-						<button  class="btn btn-primary">Search</button>
+						<button on:click={search_events} class="btn c1">Search</button>
 					</div>
 				</div>
 			</form>
@@ -111,5 +128,11 @@
 		font-weight: bold;
 		font-size: xx-large;
 		padding: 2rem;
+	}
+	.c1{
+		background-color: #EDAFB8;
+	}
+	.c1:hover{
+		background-color: #4A5759;
 	}
 </style>
