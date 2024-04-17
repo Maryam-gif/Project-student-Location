@@ -40,6 +40,46 @@
 		const result = await db.search_events(search_text);
 		$events = result;
 	}
+
+	// Handle delete button events
+	async function delete_event(id = 0) {
+		if (isNaN(id)) {
+			alert(`cannot delete event with invalid ID`);
+			return false;
+		}
+
+		if (confirm(`Permanently deleting product with ID= ${id}\n\nAre you sure?`)) {
+			const result = await db.delete_event_by_id(LogID);
+			alert(`Event with id ${id} deleted`);
+		}
+		return true;
+	}
+
+
+	//  keep track of sort directions for each col
+	const table_sort = {
+		LogID: false,
+		created_at: false,
+		StudentID: false,
+		LocationID: false,
+	};
+
+
+	//sorting the tables or columns
+	async function sort_by_col(col) {
+		let db_sort_col = col;
+
+		// reverse current sort direction for this col
+		// i.e. reverse the current order
+		table_sort[col] = !table_sort[col];
+
+		const sorted = await db.get_all_log(db_sort_col, table_sort[col]);
+
+		$events = sorted;
+
+		// output to the  browser console
+		console.log(`${col} : ${table_sort[col]}`);
+	}
 </script>
 
 <!-- The HTML content of the page-->
@@ -91,24 +131,33 @@
 			</form>
 
 			<!--table events-->
-			<div id="Student_tables">
+			<div id="log_events">
 				<!--log-->
 				<table id="Log" class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
-							<th>Log ID</th>
-							<th>Time</th>
-							<th>Student ID</th>
-							<th>Location ID</th>
+							<th class="click-text" on:click={() => sort_by_col('LogID')}><i class={ table_sort['LogID'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}></i>Log ID</th>
+							<th class="click-text" on:click={() => sort_by_col('created_at')}><i class={ table_sort['created_at'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}></i>Time</th>
+							<th class="click-text" on:click={() => sort_by_col('StudentID')}><i class={ table_sort['StudentID'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}></i>Student ID</th>
+							<th >Location ID</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#each Log as Log}
 							<tr>
-								<td> {Log.LogID} </td>
-								<td> {Log.created_at} </td>
+								<td><a href="/event_details/{Log.LogID}">{Log.LogID}</a></td>
+								<td>{format_timestamp(Log.created_at)}</td>
 								<td> {Log.StudentID} </td>
 								<td> {Log.LocationID} </td>
+								<td
+									><button
+										on:click={() => delete_event(Log.LogID)}
+										class="btn btn-sm btn-outline-danger"
+									>
+										<span class="bi bi-trash" />
+										Delete</button
+									></td
+								>
 							</tr>
 						{/each}
 					</tbody>
@@ -129,10 +178,10 @@
 		font-size: xx-large;
 		padding: 2rem;
 	}
-	.c1{
-		background-color: #EDAFB8;
+	.c1 {
+		background-color: #edafb8;
 	}
-	.c1:hover{
-		background-color: #4A5759;
+	.c1:hover {
+		background-color: #4a5759;
 	}
 </style>

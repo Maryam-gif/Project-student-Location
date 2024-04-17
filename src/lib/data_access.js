@@ -87,3 +87,25 @@ export async function get_event_by_id(id) {
 
 	return result.data;
 } console.log("this pages is for id");
+
+
+//delete button code for the events
+// @ts-ignore
+// delete event - no data returned by supabase
+export async function delete_event_by_id(LogID) {
+
+    const result = await supabase
+	.from('Log')
+    // select computer name from computers table - requires valid one-many setup  
+	.delete()
+    .eq('LogID', LogID);
+
+    // log errors
+    if (result.error) {
+        console.log(`get all events error: ${result.error}`);
+        return false;
+    }
+
+    // no error
+    return true;
+}
