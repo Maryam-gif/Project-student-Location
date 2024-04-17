@@ -38,6 +38,7 @@
 			return false;
 		}
 		const result = await db.search_events(search_text);
+
 		$events = result;
 	}
 
@@ -55,15 +56,13 @@
 		return true;
 	}
 
-
 	//  keep track of sort directions for each col
 	const table_sort = {
 		LogID: false,
 		created_at: false,
 		StudentID: false,
-		LocationID: false,
+		LocationID: false
 	};
-
 
 	//sorting the tables or columns
 	async function sort_by_col(col) {
@@ -136,10 +135,18 @@
 				<table id="Log" class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
-							<th class="click-text" on:click={() => sort_by_col('LogID')}><i class={ table_sort['LogID'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}></i>Log ID</th>
-							<th class="click-text" on:click={() => sort_by_col('created_at')}><i class={ table_sort['created_at'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}></i>Time</th>
-							<th class="click-text" on:click={() => sort_by_col('StudentID')}><i class={ table_sort['StudentID'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}></i>Student ID</th>
-							<th >Location ID</th>
+							<th class="click-text" on:click={() => sort_by_col('LogID')}
+								><i class={table_sort['LogID'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}></i>Log ID</th
+							>
+							<th class="click-text" on:click={() => sort_by_col('created_at')}
+								><i class={table_sort['created_at'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}
+								></i>Time</th
+							>
+							<th class="click-text" on:click={() => sort_by_col('StudentID')}
+								><i class={table_sort['StudentID'] ? 'bi bi-sort-down' : 'bi bi-sort-up'}
+								></i>Student ID</th
+							>
+							<th>Location ID</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -155,9 +162,8 @@
 										class="btn btn-sm btn-outline-danger"
 									>
 										<span class="bi bi-trash" />
-										Delete</button
-									></td
-								>
+									</button>
+								</td>
 							</tr>
 						{/each}
 					</tbody>
