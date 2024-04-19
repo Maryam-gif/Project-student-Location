@@ -7,6 +7,7 @@
 
 	const events = data.events;
 
+	let Log = data.Log;
 	console.log(events);
 </script>
 
@@ -19,7 +20,7 @@
 			<tbody>
 				<tr>
 					<th>Student ID: </th>
-					<td>Student.StudentID</td>
+					<td>Log.StudentID</td>
 				</tr>
 				<tr>
 					<th>Student Name: </th>

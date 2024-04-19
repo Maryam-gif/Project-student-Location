@@ -14,7 +14,7 @@
 			<path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
 		</svg>Student Location
 	</div>
-	
+
 	<div>
 		<ul class="nav-links">
 			<div class="dropdown">
@@ -36,6 +36,7 @@
 					</svg></button
 				>
 				<div class="dropdown-content">
+					<li><a href="/">Home</a></li>
 					<li><a href="/about">About</a></li>
 					<li><a href="/events">Event</a></li>
 					<li><a href="/event_details">Event Details</a></li>

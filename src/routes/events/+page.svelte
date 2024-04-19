@@ -50,7 +50,7 @@
 		}
 
 		if (confirm(`Permanently deleting product with ID= ${id}\n\nAre you sure?`)) {
-			const result = await db.delete_event_by_id(LogID);
+			const result = await db.delete_event_by_id(id);
 			alert(`Event with id ${id} deleted`);
 		}
 		return true;
@@ -152,7 +152,7 @@
 					<tbody>
 						{#each Log as Log}
 							<tr>
-								<td><a href="/event_details/{Log.LogID}">{Log.LogID}</a></td>
+								<td><a href="/event_details/">{Log.LogID}</a></td>
 								<td>{format_timestamp(Log.created_at)}</td>
 								<td> {Log.StudentID} </td>
 								<td> {Log.LocationID} </td>

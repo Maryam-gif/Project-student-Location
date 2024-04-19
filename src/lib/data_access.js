@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { supabase } from './supabase.js';
 
 //import all Building
@@ -46,7 +47,7 @@ export async function get_all_log() {
 
 //import all course
 export async function get_all_student() {
-	const result = await supabase.from('Student').select('*');
+	const result = await supabase.from('Student').select('*').order('StudentID', { ascending: true });
 
 	if (result.error) {
 		console.log(`get all student: ${result.error}`);
@@ -62,9 +63,8 @@ export async function search_events(search_text) {
 	const result = await supabase
 		.from('Log')
 		// select Student table through Log table - requires valid one-many setup
-		.select('*, Student(StudentName)')
-		.or(`StudentID.ilike.%${search_text}%`)
-		.order('LogID', {ascending: true });
+		.select("*")
+		.or (`LocationID.ilike.%${search_text}%`);
 
 	// log errors
 	if (result.error) {
@@ -75,19 +75,7 @@ export async function search_events(search_text) {
 	return result.data;
 }
 
-// @ts-ignore
-export async function get_event_by_id(id) {
-	const result = await supabase
-		.from('Log')
-		.select('*, Student(*)')
-		.eq('id', id);
 
-	if (result.error) {
-		console.log(`get all events error: ${result.error}`);
-	}
-
-	return result.data;
-} console.log("this pages is for id");
 
 
 //delete button code for the events
@@ -109,4 +97,19 @@ export async function delete_event_by_id(LogID) {
 
     // no error
     return true;
+}
+
+export async function get_event_by_id(LogID) {
+	const result = await supabase
+	.from('Log, Student(*)')
+	.select('*')
+	.eq('LogID', LogID);
+
+	// log errors
+	if (result.error) {
+		console.log(`get all events error: ${result.error}`);
+	}
+
+	//return data
+	return result.data;
 }
