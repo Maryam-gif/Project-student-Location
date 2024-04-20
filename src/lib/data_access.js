@@ -35,8 +35,11 @@ export async function get_all_location() {
 }
 
 //import all Log
-export async function get_all_log() {
-	const result = await supabase.from('Log').select('*');
+export async function get_all_log(order_col = 'LogID', order_dir = true) {
+	const result = await supabase
+		.from('Log')
+		.select('*, Student(StudentName), Location(RoomName)')
+		.order(order_col, { ascending: order_dir });
 
 	if (result.error) {
 		console.log(`get all log: ${result.error}`);
@@ -47,7 +50,10 @@ export async function get_all_log() {
 
 //import all course
 export async function get_all_student() {
-	const result = await supabase.from('Student').select('*').order('StudentID', { ascending: true });
+	const result = await supabase
+		.from('Student')
+		.select('*')
+		.order('StudentName', { ascending: true });
 
 	if (result.error) {
 		console.log(`get all student: ${result.error}`);
@@ -63,51 +69,47 @@ export async function search_events(search_text) {
 	const result = await supabase
 		.from('Log')
 		// select Student table through Log table - requires valid one-many setup
-		.select("*")
-		.or (`LocationID.ilike.%${search_text}%`);
+		.select('*, Student(StudentName), Location(RoomName)')
+		.or(
+			`LocationID.ilike.%${search_text}%,StudentName.ilike.%${search_text}%,RoomName.ilike.%${search_text}%`
+		)
+		.order('created_at', { ascending: true });
 
 	// log errors
 	if (result.error) {
-		console.log(`get all events error: ${result.error}`);
+		console.log(`get all search events error: ${result.error}`);
 	}
 
 	// return data
 	return result.data;
 }
 
-
-
-
 //delete button code for the events
 // @ts-ignore
 // delete event - no data returned by supabase
 export async function delete_event_by_id(LogID) {
-
-    const result = await supabase
-	.from('Log')
-    // select computer name from computers table - requires valid one-many setup  
-	.delete()
-    .eq('LogID', LogID);
-
-    // log errors
-    if (result.error) {
-        console.log(`get all events error: ${result.error}`);
-        return false;
-    }
-
-    // no error
-    return true;
-}
-
-export async function get_event_by_id(LogID) {
 	const result = await supabase
-	.from('Log, Student(*)')
-	.select('*')
-	.eq('LogID', LogID);
+		.from('Log')
+		// select computer name from computers table - requires valid one-many setup
+		.delete()
+		.eq('LogID', LogID);
 
 	// log errors
 	if (result.error) {
-		console.log(`get all events error: ${result.error}`);
+		console.log(`delete all events error: ${result.error}`);
+		return false;
+	}
+
+	// no error
+	return true;
+}
+
+export async function get_event_by_id(LogID) {
+	const result = await supabase.from('Log').select('*, Student(*)').eq('LogID', LogID);
+
+	// log errors
+	if (result.error) {
+		console.log(`get all events by id error: ${result.error}`);
 	}
 
 	//return data
