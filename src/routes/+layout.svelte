@@ -40,7 +40,6 @@
 					<li><a href="/about">About</a></li>
 					<li><a href="/events">Event</a></li>
 					<li><a href="/event_details">Event Details</a></li>
-					<li><a href="/contact">Contact</a></li>
 				</div>
 			</div>
 		</ul>
