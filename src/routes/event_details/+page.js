@@ -12,9 +12,11 @@ export async function load({ fetch, params }) {
 		return {
 			events: events
 		};
-	}console.log("page.js for event details")
+	}
 
 	return {
 		error: 'Error loading'
 	};
-} 
+} console.log("page.js for event details")
+
+

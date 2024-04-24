@@ -7,7 +7,6 @@
 
 	const events = data.events;
 
-	let Log = data.Log;
 	console.log(events);
 </script>
 
@@ -20,23 +19,19 @@
 			<tbody>
 				<tr>
 					<th>Student ID: </th>
-					<td>Log.StudentID</td>
+					<td>events.Log.LogID</td>
 				</tr>
 				<tr>
 					<th>Student Name: </th>
-					<td>events[0].Student.StudentName</td>
+					<td>format_timestamp(events.Log.created_at)</td>
 				</tr>
 				<tr>
 					<th>description</th>
-					<td>events[0].computers.description</td>
+					<td>events.Log.StudentID</td>
 				</tr>
 				<tr>
 					<th>location</th>
-					<td>events[0].computers.location</td>
-				</tr>
-				<tr>
-					<th>created</th>
-					<td>format_timestamp(events[0].computers.created_at)</td>
+					<td>events.Log.LocationID</td>
 				</tr>
 			</tbody>
 		</table>

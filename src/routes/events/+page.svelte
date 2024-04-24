@@ -26,8 +26,8 @@
 		}
 
 		Log = filtered.data;
-	}
-	console.log(Log);
+	} 	console.log(Log);
+
 
 	let search_text = '';
 
@@ -40,7 +40,7 @@
 		const result = await db.search_events(search_text);
 
 		$events = result;
-	}
+	} console.log(Log);
 
 	// Handle delete button events
 	async function delete_event(id = 0) {
@@ -66,13 +66,13 @@
 
 	//sorting the tables or columns
 	async function sort_by_col(col) {
-		let db_sort_col = col;
+		let db_col = col;
 
 		// reverse current sort direction for this col
 		// i.e. reverse the current order
 		table_sort[col] = !table_sort[col];
 
-		const sorted = await db.get_all_log(db_sort_col, table_sort[col]);
+		const sorted = await db.get_all_log(db_col, table_sort[col]);
 
 		$events = sorted;
 

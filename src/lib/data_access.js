@@ -35,10 +35,10 @@ export async function get_all_location() {
 }
 
 //import all Log
-export async function get_all_log(order_col = 'LogID', order_dir = true) {
+export async function get_all_log(order_col = 'LogID', order_dir= true) {
 	const result = await supabase
 		.from('Log')
-		.select('*, Student(StudentName), Location(RoomName)')
+		.select('*, Student(StudentName)')
 		.order(order_col, { ascending: order_dir });
 
 	if (result.error) {
@@ -69,11 +69,11 @@ export async function search_events(search_text) {
 	const result = await supabase
 		.from('Log')
 		// select Student table through Log table - requires valid one-many setup
-		.select('*, Student(StudentName), Location(RoomName)')
+			.select('*, Student(StudentName), Location(RoomName)')
 		.or(
 			`LocationID.ilike.%${search_text}%,StudentName.ilike.%${search_text}%,RoomName.ilike.%${search_text}%`
 		)
-		.order('created_at', { ascending: true });
+			.order('created_at', { ascending: true });
 
 	// log errors
 	if (result.error) {
@@ -104,8 +104,11 @@ export async function delete_event_by_id(LogID) {
 	return true;
 }
 
-export async function get_event_by_id(LogID) {
-	const result = await supabase.from('Log').select('*, Student(*)').eq('LogID', LogID);
+export async function get_event_by_id(ID) {
+	const result = await supabase
+		.from('Log')
+		.select('*, Student(*)')
+		.eq('LogID', ID);
 
 	// log errors
 	if (result.error) {
